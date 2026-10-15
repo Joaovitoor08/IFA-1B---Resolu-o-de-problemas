@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EcoTech Math - Sustentabilidade e Tecnociência</title>
+
+<style>
+:root {
+--primary: #2e7d32;
+--primary-dark: #1b5e20;
+--primary-light: #e8f5e9;
+
+--secondary: #0288d1;
+--secondary-light: #e1f5fe;
+
+--dark: #263238;
+--light: #f5f7f6;
+--white: #ffffff;
+
+--danger: #c62828;
+--danger-light: #ffebee;
+
+--border: #d7ded9;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+html {
+scroll-behavior: smooth;
+}
+
+body {
+background-color: var(--light);
+color: var(--dark);
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+line-height: 1.6;
+}
+
+/* =========================
+CABEÇALHO
+========================= */
+
+header {
+background: linear-gradient(135deg, var(--primary), var(--secondary));
+color: var(--white);
+padding: 3rem 1rem;
+text-align: center;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+header h1 {
+font-size: clamp(2rem, 5vw, 3rem);
+margin-bottom: 0.5rem;
+}
+
+header p {
+font-size: clamp(1rem, 2.5vw, 1.2rem);
+opacity: 0.95;
+}
+
+/* =========================
+MENU
+========================= */
+
+nav {
+background-color: var(--dark);
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+position: sticky;
+top: 0;
+z-index: 1000;
+}
+
+nav a {
+color: var(--white);
+padding: 0.9rem 1.2rem;
+text-decoration: none;
+font-weight: bold;
+transition: 0.3s;
+}
+
+nav a:hover {
+background-color: var(--primary);
+}
+
+/* =========================
+CONTEÚDO
+========================= */
+
+main {
+width: min(1100px, 92%);
+margin: 2rem auto;
+}
+
+section {
+background-color: var(--white);
+padding: clamp(1.2rem, 4vw, 2rem);
+border-radius: 12px;
+margin-bottom: 2rem;
+box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+h2 {
+color: var(--primary);
+border-bottom: 2px solid var(--primary-light);
+padding-bottom: 0.5rem;
+margin-bottom: 1rem;
+}
+
+h3 {
+color: var(--secondary);
+margin-bottom: 0.5rem;
+}
+
+p {
+margin-bottom: 1rem;
+}
+
+/* =========================
+CAIXAS
+========================= */
+
+.highlight-box,
+.chemistry-box {
+padding: 1.2rem;
+border-radius: 8px;
+margin: 1.2rem 0;
+}
+
+.highlight-box {
+background-color: var(--primary-light);
+border-left: 5px solid var(--primary);
+}
+
+.chemistry-box {
+background-color: var(--secondary-light);
+border-left: 5px solid var(--secondary);
+}
+
+/* =========================
+CARDS
+========================= */
+
+.grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 1.5rem;
+margin-top: 1.5rem;
+}
+
+.card {
+background: var(--light);
+padding: 1.5rem;
+border-radius: 10px;
+border: 1px solid var(--border);
+}
+
+/* =========================
+CALCULADORA
+========================= */
+
+.calc-container {
+background: linear-gradient(
+145deg,
+#f1f8e9,
+#ffffff
+);
+
+border: 1px solid #c8e6c9;
+border-radius: 12px;
+padding: clamp(1.2rem, 4vw, 2rem);
+margin-top: 1.5rem;
+}
+
+.form-group {
+margin-bottom: 1.3rem;
+}
+
+label {
+display: block;
+margin-bottom: 0.5rem;
+font-weight: 600;
+}
+
+input,
+select {
+width: 100%;
+padding: 0.85rem;
+border: 2px solid #ccc;
+border-radius: 7px;
+font-size: 1rem;
+background-color: var(--white);
+transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+outline: none;
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.buttons {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+}
+
+button {
+border: none;
+padding: 0.9rem 1.5rem;
+font-size: 1rem;
+font-weight: bold;
+border-radius: 7px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.btn-calcular {
+background-color: var(--primary);
+color: var(--white);
+}
+
+.btn-calcular:hover {
+background-color: var(--primary-dark);
+transform: translateY(-1px);
+}
+
+.btn-limpar {
+background-color: #eceff1;
+color: var(--dark);
+}
+
+.btn-limpar:hover {
+background-color: #cfd8dc;
+}
+
+/* =========================
+RESULTADO
+========================= */
+
+.result {
+margin-top: 1.5rem;
+padding: 1.3rem;
+background-color: var(--white);
+border-radius: 8px;
+border-left: 5px solid var(--primary);
+display: none;
+}
+
+.result.show {
+display: block;
+animation: aparecer 0.3s ease;
+}
+
+.result.erro {
+border-left-color: var(--danger);
+background-color: var(--danger-light);
+}
+
+.result h3 {
+color: var(--primary);
+margin-bottom: 0.5rem;
+}
+
+.result.erro h3 {
+color: var(--danger);
+}
+
+.valor-resultado {
+font-size: 1.8rem;
+font-weight: bold;
+color: var(--primary);
+margin: 0.5rem 0;
+}
+
+.formula {
+background-color: var(--primary-light);
+padding: 0.8rem;
+border-radius: 6px;
+margin-top: 0.8rem;
+}
+
+@keyframes aparecer {
+from {
+opacity: 0;
+transform: translateY(-5px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* =========================
+RODAPÉ
+========================= */
+
+footer {
+text-align: center;
+padding: 2rem 1rem;
+background-color: var(--dark);
+color: var(--white);
+margin-top: 4rem;
+}
+
+/* =========================
+RESPONSIVIDADE
+========================= */
+
+@media (max-width: 700px) {
+
+nav {
+position: static;
+flex-direction: column;
+}
+
+nav a {
+text-align: center;
+padding: 0.75rem;
+border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.grid {
+grid-template-columns: 1fr;
+}
+
+.buttons {
+grid-template-columns: 1fr;
+}
+
+section {
+margin-bottom: 1.2rem;
+}
+
+.valor-resultado {
+font-size: 1.5rem;
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🌱 EcoTech Math</h1>
+<p>
+Resolução de Problemas, Tecnociência Química e Sustentabilidade Biológica
+</p>
+</header>
+
+<nav>
+<a href="#introducao">Início</a>
+<a href="#ciclo-agua">Ciclo da Água</a>
+<a href="#evapotranspiracao">Evapotranspiração</a>
+<a href="#calculo-vazao">Cálculo de Vazão</a>
+<a href="#calculadora">Calculadora</a>
+</nav>
+
+<main>
+
+<!-- INTRODUÇÃO -->
+
+<section id="introducao">
+
+<h2>
+Matemática, Biologia e Química unidas pela Sustentabilidade
+</h2>
+
+<p>
+O gerenciamento inteligente dos recursos hídricos é um dos maiores
+desafios da nossa era. Através da <strong>tecnociência</strong>,
+unimos ferramentas matemáticas e conceitos químicos e biológicos
+para otimizar sistemas agrícolas e ecológicos.
+</p>
+
+<div class="highlight-box">
+<strong>Objetivo:</strong>
+utilizar a matemática para reduzir o desperdício de água e melhorar
+a eficiência dos sistemas de irrigação.
+</div>
+
+</section>
+
+
+<!-- CICLO DA ÁGUA -->
+
+<section id="ciclo-agua">
+
+<h2>1. O Ciclo da Água e a Tecnociência Química</h2>
+
+<p>
+O ciclo hidrológico é o movimento contínuo da água pela Terra.
+A atividade humana interfere nesse ciclo e torna necessário o uso
+de tecnologias para monitoramento e conservação.
+</p>
+
+<div class="chemistry-box">
+
+<strong>Abordagem Química e Tecnológica:</strong>
+
+<p>
+A água (H₂O) atua como solvente nos ecossistemas.
+Sensores modernos podem monitorar parâmetros como pH,
+condutividade elétrica e nutrientes dissolvidos.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- EVAPOTRANSPIRAÇÃO -->
+
+<section id="evapotranspiracao">
+
+<h2>2. Evapotranspiração da Planta</h2>
+
+<p>
+A <strong>evapotranspiração (ET)</strong> corresponde à soma
+da evaporação da água presente no solo com a transpiração
+das plantas.
+</p>
+
+<div class="grid">
+
+<div class="card">
+
+<h3>🌿 Mecanismo Biológico</h3>
+
+<p>
+As plantas absorvem água pelas raízes e liberam parte
+dela na atmosfera através dos estômatos presentes
+nas folhas.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>💧 Sustentabilidade</h3>
+
+<p>
+Conhecer a necessidade hídrica da planta ajuda a evitar
+o desperdício de água e a lixiviação de nutrientes.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CÁLCULO DE VAZÃO -->
+
+<section id="calculo-vazao">
+
+<h2>3. Cálculo de Vazão</h2>
+
+<p>
+A vazão representa o volume de água que passa por um sistema
+durante determinado período.
+</p>
+
+<div class="highlight-box">
+
+<strong>Equação fundamental:</strong>
+
+<p>
+Q = V ÷ t
+</p>
+
+<p>
+Onde:
+</p>
+
+<ul>
+<li><strong>Q</strong> = vazão em litros por hora (L/h)</li>
+<li><strong>V</strong> = volume em litros (L)</li>
+<li><strong>t</strong> = tempo em horas (h)</li>
+</ul>
+
+</div>
+
+</section>
+
+
+<!-- CALCULADORA -->
+
+<section id="calculadora">
+
+<h2>4. Calculadora Tecnocientífica</h2>
+
+<p>
+Use a calculadora para descobrir a vazão necessária ou o tempo
+de irrigação de um sistema de gotejamento.
+</p>
+
+<div class="calc-container">
+
+<!-- TIPO DE CÁLCULO -->
+
+<div class="form-group">
+
+<label for="tipoCalculo">
+O que você deseja calcular?
+</label>
+
+<select id="tipoCalculo">
+
+<option value="vazao">
+Vazão do Gotejador (L/h)
+</option>
+
+<option value="tempo">
+Tempo de Irrigação Necessário
+</option>
+
+</select>
+
+</div>
+
+
+<!-- VOLUME -->
+
+<div class="form-group">
+
+<label for="volume">
+Volume de água (Litros):
+</label>
+
+<input
+type="number"
+id="volume"
+placeholder="Ex: 4"
+min="0"
+step="0.1"
+>
+
+</div>
+
+
+<!-- TEMPO -->
+
+<div class="form-group" id="grupo-tempo">
+
+<label for="tempoInput">
+Tempo de irrigação (Horas):
+</label>
+
+<input
+type="number"
+id="tempoInput"
+placeholder="Ex: 2"
+min="0"
+step="0.1"
+>
+
+</div>
+
+
+<!-- VAZÃO -->
+
+<div class="form-group" id="grupo-vazao">
+
+<label for="vazaoInput">
+Vazão do gotejador (L/h):
+</label>
+
+<input
+type="number"
+id="vazaoInput"
+placeholder="Ex: 2"
+min="0"
+step="0.1"
+>
+
+</div>
+
+
+<!-- BOTÕES -->
+
+<div class="buttons">
+
+<button
+type="button"
+class="btn-calcular"
+id="btnCalcular"
+>
+🧮 Calcular
+</button>
+
+<button
+type="button"
+class="btn-limpar"
+id="btnLimpar"
+>
+🗑️ Limpar
+</button>
+
+</div>
+
+
+<!-- RESULTADO -->
+
+<div
+id="resultado"
+class="result"
+aria-live="polite"
+></div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<p>
+🌱 <strong>EcoTech Math</strong>
+</p>
+
+<p>
+Matemática, tecnologia e sustentabilidade para um futuro melhor.
+</p>
+
+</footer>
+
+
+<script>
+
+// ================================
+// ELEMENTOS
+// ================================
+
+const tipoCalculo = document.getElementById("tipoCalculo");
+
+const volume = document.getElementById("volume");
+
+const tempoInput = document.getElementById("tempoInput");
+
+const vazaoInput = document.getElementById("vazaoInput");
+
+const grupoTempo = document.getElementById("grupo-tempo");
+
+const grupoVazao = document.getElementById("grupo-vazao");
+
+const resultado = document.getElementById("resultado");
+
+const btnCalcular = document.getElementById("btnCalcular");
+
+const btnLimpar = document.getElementById("btnLimpar");
+
+
+// ================================
+// ALTERAR TIPO DE CÁLCULO
+// ================================
+
+function alternarCampos() {
+
+resultado.classList.remove("show");
+
+resultado.innerHTML = "";
+
+if (tipoCalculo.value === "vazao") {
+
+// Para calcular vazão:
+// precisamos de volume + tempo
+
+grupoTempo.style.display = "block";
+
+grupoVazao.style.display = "none";
+
+vazaoInput.value = "";
+
+} else {
+
+// Para calcular tempo:
+// precisamos de volume + vazão
+
+grupoTempo.style.display = "none";
+
+grupoVazao.style.display = "block";
+
+tempoInput.value = "";
+}
+}
+
+
+// ================================
+// MOSTRAR ERRO
+// ================================
+
+function mostrarErro(mensagem) {
+
+resultado.className = "result erro show";
+
+resultado.innerHTML = `
+<h3>⚠️ Atenção</h3>
+<p>${mensagem}</p>
+`;
+}
+
+
+// ================================
+// CALCULAR
+// ================================
+
+function calcular() {
+
+const volumeValor = parseFloat(volume.value);
+
+// --------------------------------
+// CALCULAR VAZÃO
+// --------------------------------
+
+if (tipoCalculo.value === "vazao") {
+
+const tempoValor = parseFloat(tempoInput.value);
+
+// Validação
+
+if (
+isNaN(volumeValor) ||
+isNaN(tempoValor)
+) {
+
+mostrarErro(
+"Preencha o volume e o tempo antes de calcular."
+);
+
+return;
+}
+
+if (
+volumeValor <= 0 ||
+tempoValor <= 0
+) {
+
+mostrarErro(
+"Os valores devem ser maiores que zero."
+);
+
+return;
+}
+
+// Fórmula:
+// Q = V / t
+
+const vazao = volumeValor / tempoValor;
+
+resultado.className = "result show";
+
+resultado.innerHTML = `
+
+<h3>💧 Vazão necessária</h3>
+
+<div class="valor-resultado">
+${vazao.toFixed(2)} L/h
+</div>
+
+<p>
+O gotejador deverá fornecer aproximadamente
+<strong>${vazao.toFixed(2)} litros por hora</strong>.
+</p>
+
+<div class="formula">
+
+<strong>Fórmula utilizada:</strong>
+
+<br>
+
+Q = V ÷ t
+
+<br><br>
+
+Q = ${volumeValor} ÷ ${tempoValor}
+
+<br>
+
+Q = <strong>${vazao.toFixed(2)} L/h</strong>
+
+</div>
+`;
+
+}
+
+
+// --------------------------------
+// CALCULAR TEMPO
+// --------------------------------
+
+else {
+
+const vazaoValor = parseFloat(vazaoInput.value);
+
+// Validação
+
+if (
+isNaN(volumeValor) ||
+isNaN(vazaoValor)
+) {
+
+mostrarErro(
+"Preencha o volume e a vazão antes de calcular."
+);
+
+return;
+}
+
+if (
+volumeValor <= 0 ||
+vazaoValor <= 0
+) {
+
+mostrarErro(
+"Os valores devem ser maiores que zero."
+);
+
+return;
+}
+
+// Fórmula:
+// t = V / Q
+
+const tempo = volumeValor / vazaoValor;
+
+// Converter horas para minutos
+
+const minutos = tempo * 60;
+
+resultado.className = "result show";
+
+resultado.innerHTML = `
+
+<h3>⏱️ Tempo de irrigação</h3>
+
+<div class="valor-resultado">
+${tempo.toFixed(2)} horas
+</div>
+
+<p>
+Isso corresponde a aproximadamente
+<strong>${minutos.toFixed(0)} minutos</strong>
+de irrigação.
+</p>
+
+<div class="formula">
+
+<strong>Fórmula utilizada:</strong>
+
+<br>
+
+t = V ÷ Q
+
+<br><br>
+
+t = ${volumeValor} ÷ ${vazaoValor}
+
+<br>
+
+t = <strong>${tempo.toFixed(2)} horas</strong>
+
+</div>
+`;
+}
+}
+
+
+// ================================
+// LIMPAR
+// ================================
+
+function limpar() {
+
+volume.value = "";
+
+tempoInput.value = "";
+
+vazaoInput.value = "";
+
+resultado.innerHTML = "";
+
+resultado.className = "result";
+
+tipoCalculo.value = "vazao";
+
+alternarCampos();
+}
+
+
+// ================================
+// EVENTOS
+// ================================
+
+tipoCalculo.addEventListener(
+"change",
+alternarCampos
+);
+
+btnCalcular.addEventListener(
+"click",
+calcular
+);
+
+btnLimpar.addEventListener(
+"click",
+limpar
+);
+
+
+// ================================
+// ENTER PARA CALCULAR
+// ================================
+
+document.addEventListener(
+"keydown",
+function(event) {
+
+if (event.key === "Enter") {
+
+calcular();
+
+}
+
+}
+);
+
+
+// ================================
+// CONFIGURAÇÃO INICIAL
+// ================================
+
+alternarCampos();
+
+</script>
+
+</body>
+</html>
